@@ -5,6 +5,7 @@ import { FaUserAlt } from "react-icons/fa";
 
 import DesktopNav from "./DesktopNav";
 import MobileNav from "./MobileNav";
+import LanguageSwitcher from "../translator/LanguageSwitcher";
 
 export default function Navbar() {
 	const [mobileOpen, setMobileOpen] = useState(false);
@@ -44,6 +45,8 @@ export default function Navbar() {
 				</div>
 
 				<MobileNav open={mobileOpen} onClose={() => setMobileOpen(false)} />
+
+				<LanguageSwitcher />
 			</header>
 		</>
 	);
