@@ -1,9 +1,7 @@
 import { Routes, Route } from "react-router-dom";
+
 import Navbar from "./components/navber/Navbar";
-import About from "./pages/About";
-import Contact from "./pages/Contact";
-import Login from "./pages/Login";
-import ServicePage from "./pages/ServicePage";
+import Footer from "./components/home/Footer";
 import Hero from "./components/home/Hero";
 import Features from "./components/home/Features";
 import WhyChooseUs from "./components/home/WhyChooseUs";
@@ -14,41 +12,50 @@ import CTA from "./components/home/CTA";
 import MobileApp from "./components/home/MobileApp";
 import DigitalBanking from "./components/home/DigitalBanking";
 import AccountBanner from "./components/home/AccountBanner";
-import Footer from "./components/home/Footer";
-// import GoogleTranslateProvider from "./components/translator/GoogleTranslateProvider";
+import About from "./pages/About";
+import Contact from "./pages/Contact";
+import Login from "./pages/Login";
+import InvestmentManagement from "./pages/InvestmentManagement";
+import Loan from "./pages/Loan";
 import "./components/translator/translator.css";
+
+function HomePage() {
+	return (
+		<>
+			<Hero />
+			<Features />
+			<WhyChooseUs />
+			<Services />
+			<PrivacySection />
+			<Statistics />
+			<CTA />
+			<MobileApp />
+			<DigitalBanking />
+			<AccountBanner />
+		</>
+	);
+}
 
 function App() {
 	return (
 		<>
 			<Navbar />
+
 			<Routes>
-				<Route
-					path="/"
-					element={
-						<>
-							<Hero />
-							<Features />
-							<WhyChooseUs />
-							<Services />
-							<PrivacySection />
-							<Statistics />
-							sss
-							<CTA />
-							<MobileApp />
-							<DigitalBanking />
-							<AccountBanner />
-							<Footer />
-						</>
-					}
-				/>
+				<Route path="/" element={<HomePage />} />
 				<Route path="/about" element={<About />} />
+				<Route
+					path="/investment-management"
+					element={<InvestmentManagement />}
+				/>
+				<Route path="/business-loan" element={<Loan />} />
 				<Route path="/contact" element={<Contact />} />
 				<Route path="/login" element={<Login />} />
-				<Route path="/services/:serviceSlug" element={<ServicePage />} />
 			</Routes>
 
-			{/* <GoogleTranslat,eProvider /> */}
+			<Footer />
+
+			{/* <GoogleTranslateProvider /> */}
 		</>
 	);
 }

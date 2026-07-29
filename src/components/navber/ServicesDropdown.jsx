@@ -4,11 +4,11 @@ import { motion } from "framer-motion";
 const services = [
 	{
 		title: "Investment Management",
-		path: "/services/investment-management",
+		path: "/investment-management",
 	},
 	{
 		title: "Business Loan",
-		path: "/services/business-loan",
+		path: "/business-loan",
 	},
 ];
 

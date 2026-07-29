@@ -38,9 +38,6 @@ const serviceLinks = [
 export default function Footer() {
 	return (
 		<footer className="relative overflow-hidden bg-[#111111] pt-20 pb-5 text-white">
-			{/* Top Accent Line */}
-			<div className="absolute left-0 top-0 h-1 w-full bg-gradient-to-r from-emerald-600 via-amber-400 to-emerald-600" />
-
 			<div className="mx-auto max-w-7xl px-6">
 				<div className="grid gap-14 md:grid-cols-2 lg:grid-cols-4">
 					{/* Company */}
