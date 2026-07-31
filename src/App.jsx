@@ -15,6 +15,7 @@ import AccountBanner from "./components/home/AccountBanner";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Login from "./pages/Login";
+// import Register from "./pages/Register/index.jsx";
 import InvestmentManagement from "./pages/InvestmentManagement";
 import Loan from "./pages/Loan";
 import "./components/translator/translator.css";
@@ -51,6 +52,7 @@ function App() {
 				<Route path="/business-loan" element={<Loan />} />
 				<Route path="/contact" element={<Contact />} />
 				<Route path="/login" element={<Login />} />
+				{/* <Route path="/register" element={<Register />} /> */}
 			</Routes>
 
 			<Footer />
