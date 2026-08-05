@@ -1,0 +1,31 @@
+.phone-input input {
+	width: 100%;
+	border: none;
+	outline: none;
+	background: transparent;
+	font-size: 16px;
+	padding-left: 10px;
+	color: #111827;
+}
+
+.phone-input input::placeholder {
+	color: #9ca3af;
+}
+
+.PhoneInputCountryIcon {
+	border-radius: 4px;
+}
+
+.PhoneInputCountrySelect {
+	cursor: pointer;
+}
+
+/* Hide scrollbar for the register form right panel */
+.scrollbar-hide {
+	-ms-overflow-style: none; /* IE and Edge */
+	scrollbar-width: none; /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+	display: none; /* Chrome, Safari, Opera */
+}

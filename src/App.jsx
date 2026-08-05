@@ -15,11 +15,12 @@ import AccountBanner from "./components/home/AccountBanner";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Login from "./pages/Login";
-// import Register from "./pages/Register/index.jsx";
 import InvestmentManagement from "./pages/InvestmentManagement";
 import Loan from "./pages/Loan";
 import Terms from "./pages/Terms";
 import "./components/translator/translator.css";
+import "./styles/phone.css";
+import Register from "./pages/Register";
 
 function HomePage() {
 	return (
@@ -54,7 +55,7 @@ function App() {
 				<Route path="/contact" element={<Contact />} />
 				<Route path="/login" element={<Login />} />
 				<Route path="/terms" element={<Terms />} />
-				{/* <Route path="/register" element={<Register />} /> */}
+				<Route path="/register" element={<Register />} />
 			</Routes>
 
 			<Footer />
