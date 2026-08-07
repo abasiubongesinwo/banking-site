@@ -34,7 +34,6 @@ export default function PersonalInfo() {
 
 						<input
 							type="text"
-							placeholder="John"
 							className="w-full bg-transparent px-4 py-4 outline-none"
 						/>
 					</div>
@@ -52,7 +51,6 @@ export default function PersonalInfo() {
 
 						<input
 							type="text"
-							placeholder="Michael"
 							className="w-full bg-transparent px-4 py-4 outline-none"
 						/>
 					</div>
@@ -70,7 +68,6 @@ export default function PersonalInfo() {
 
 						<input
 							type="text"
-							placeholder="Doe"
 							className="w-full bg-transparent px-4 py-4 outline-none"
 						/>
 					</div>
@@ -88,7 +85,6 @@ export default function PersonalInfo() {
 
 						<input
 							type="text"
-							placeholder="johndoe"
 							className="w-full bg-transparent px-4 py-4 outline-none"
 						/>
 					</div>
@@ -107,7 +103,6 @@ export default function PersonalInfo() {
 
 					<input
 						type="email"
-						placeholder="john.doe@email.com"
 						className="w-full bg-transparent px-4 py-4 outline-none"
 					/>
 				</div>

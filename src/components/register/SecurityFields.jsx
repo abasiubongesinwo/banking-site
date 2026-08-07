@@ -66,7 +66,6 @@ export default function SecurityFields() {
 					<input
 						type="password"
 						maxLength={4}
-						placeholder="••••"
 						className="w-full bg-transparent px-4 py-4 outline-none"
 					/>
 				</div>
@@ -88,7 +87,6 @@ export default function SecurityFields() {
 
 					<input
 						type={showPassword ? "text" : "password"}
-						placeholder="Create a secure password"
 						value={password}
 						onChange={(e) => setPassword(e.target.value)}
 						className="w-full bg-transparent px-4 py-4 outline-none"
@@ -134,7 +132,6 @@ export default function SecurityFields() {
 
 					<input
 						type={showConfirm ? "text" : "password"}
-						placeholder="Confirm your password"
 						className="w-full bg-transparent px-4 py-4 outline-none"
 					/>
 

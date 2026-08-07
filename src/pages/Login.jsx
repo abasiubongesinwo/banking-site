@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 export default function Login() {
 	return (
-		<section className="min-h-screen bg-[#f5f8f7]">
+		<section className="min-h-screen bg-[#ccdad5]">
 			<div className="grid min-h-screen lg:grid-cols-2">
 				{/* Left Side */}
 				<div
@@ -17,12 +17,29 @@ export default function Login() {
 						backgroundSize: "cover",
 						backgroundPosition: "center",
 					}}>
-					<div className="absolute inset-0 bg-gradient-to-br from-emerald-900/80 to-emerald-700/60" />
+					{/* <div className="absolute inset-0 bg-gradient-to-br from-emerald-900/80 to-emerald-700/60" /> */}
 
-					<div className="relative z-10 flex flex-col justify-center px-16 text-white">
-						<span className="text-sm uppercase tracking-[6px] text-amber-400">
+					<div className="relative z-10 flex flex-col justify-center px-10 text-white">
+						<motion.img
+							initial={{ opacity: 0, y: 20 }}
+							animate={{ opacity: 1, y: 0 }}
+							transition={{ duration: 0.6 }}
+							src="/logo.png"
+							alt="First Bank"
+							className="mb-4 h-20 w-fit"
+						/>
+
+						<motion.span
+							initial={{ opacity: 0 }}
+							animate={{ opacity: 1 }}
+							transition={{ delay: 0.15 }}
+							className="text-sm font-semibold uppercase tracking-[6px] text-amber-400">
+							First Bank of Delaware
+						</motion.span>
+
+						{/* <span className="text-sm uppercase tracking-[6px] text-amber-400">
 							Secure Online Banking
-						</span>
+						</span> */}
 
 						<h1 className="mt-6 font-serif text-6xl font-bold leading-tight">
 							Welcome Back
@@ -85,14 +102,16 @@ export default function Login() {
 						<form className="mt-10 space-y-6">
 							{/* Email */}
 							<div>
-								<label className="mb-2 block font-medium">Email Address</label>
+								<label className="mb-2 block font-medium">
+									Email Address or Username
+								</label>
 
 								<div className="flex items-center rounded-xl border border-gray-300 px-4">
 									<Mail className="text-gray-400" size={20} />
 
 									<input
 										type="email"
-										placeholder="Enter your email"
+										placeholder="Enter your email or Username"
 										className="w-full bg-transparent px-4 py-4 outline-none"
 									/>
 								</div>

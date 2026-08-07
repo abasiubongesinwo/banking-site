@@ -8,7 +8,7 @@ const companyLinks = [
 	},
 	{
 		name: "Services",
-		path: "/services",
+		path: "/investment-management",
 	},
 	{
 		name: "Careers",

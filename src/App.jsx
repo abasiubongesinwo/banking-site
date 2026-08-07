@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 
 import Navbar from "./components/navber/Navbar";
 import Footer from "./components/home/Footer";
@@ -40,6 +40,14 @@ function HomePage() {
 }
 
 function App() {
+	const location = useLocation();
+
+	const shouldShowFooter = () => {
+		const hideFooterPaths = ["/login", "/register", "/signup"];
+
+		return !hideFooterPaths.includes(location.pathname);
+	};
+
 	return (
 		<>
 			<Navbar />
@@ -58,9 +66,7 @@ function App() {
 				<Route path="/register" element={<Register />} />
 			</Routes>
 
-			<Footer />
-
-			{/* <GoogleTranslateProvider /> */}
+			{shouldShowFooter() && <Footer />}
 		</>
 	);
 }

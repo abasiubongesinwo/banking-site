@@ -32,7 +32,7 @@ const features = [
 export default function LeftPanel() {
 	return (
 		<div
-			className="relative flex h-screen flex-col justify-center overflow-hidden"
+			className="relative h-full w-full flex flex-col justify-center "
 			style={{
 				backgroundImage: `
 			linear-gradient(rgba(8,40,28,.88), rgba(8,40,28,.88)),
@@ -105,8 +105,8 @@ export default function LeftPanel() {
 									delay: 0.6 + index * 0.15,
 								}}
 								className="flex items-center gap-5 rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur-md">
-								<div className="rounded-2xl bg-emerald-600 p-4">
-									<Icon size={22} className="text-white" />
+								<div className="rounded-2xl bg-white/10 p-4">
+									<Icon size={22} className="text-amber-400" />
 								</div>
 
 								<div>

@@ -3,16 +3,16 @@ import RegisterForm from "../components/register/RegisterForm";
 
 export default function Register() {
 	return (
-		<div className="h-screen overflow-hidden bg-[#f8faf9]">
-			<div className="grid h-full lg:grid-cols-2">
-				{/* LEFT - fixed, no scroll */}
-				<div className="hidden h-screen overflow-hidden lg:block">
+		<div className="bg-[#f8faf9] h-screen">
+			<div className="grid grid-cols-1 h-full lg:grid-cols-2">
+				{/*LEFT - fix, no scroll */}
+				<div className="hidden lg:block">
 					<LeftPanel />
 				</div>
 
-				{/* RIGHT - scrollable, hidden scrollbar */}
-				<div className="register-scroll h-screen overflow-y-auto scrollbar-hide">
-					<div className="min-h-full flex items-center justify-center px-8 py-12">
+				{/*RIGHT - scrollable */}
+				<div className="register-scroll h-full overflow-y-auto scrollbar-hide">
+					<div className="flex items-start justify-center min-h-full">
 						<RegisterForm />
 					</div>
 				</div>
