@@ -22,6 +22,8 @@ import AdminProfile from "./pages/AdminProfile";
 import AdminRoles from "./pages/AdminRoles";
 import AdminActivity from "./pages/AdminActivity";
 import AdminSystemLogs from "./pages/AdminSystemLogs";
+import ManageUser from "./pages/ManageUser";
+import SendEmail from "./pages/SendEmail";
 
 export default function AdminRoutes() {
 	return (
@@ -36,6 +38,7 @@ export default function AdminRoutes() {
 
 				{/* Users */}
 				<Route path="manage-users" element={<ManageUsers />} />
+				<Route path="manage-users/:id" element={<ManageUser />} />
 
 				<Route path="create-user" element={<CreateUser />} />
 
@@ -52,6 +55,9 @@ export default function AdminRoutes() {
 				<Route path="deposits" element={<Deposits />} />
 
 				<Route path="withdrawals" element={<Withdrawals />} />
+
+				{/*Send Email*/}
+				<Route path="send-email" element={<SendEmail />} />
 
 				{/* Virtual Cards */}
 				<Route path="cards" element={<Cards />} />

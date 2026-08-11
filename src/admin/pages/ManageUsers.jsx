@@ -1,513 +1,242 @@
-import { useMemo, useState } from "react";
-import { motion } from "framer-motion";
-import {
-	FaSearch,
-	FaFilter,
-	FaEye,
-	FaEdit,
-	FaBan,
-	FaCheckCircle,
-	FaUserPlus,
-	FaChevronLeft,
-	FaChevronRight,
-} from "react-icons/fa";
-import { Link } from "react-router-dom";
+import React, { useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { FaEnvelope } from "react-icons/fa";
+import usersData from "../data/UsersData";
 
-const usersData = [
-	{
-		id: 1,
-		name: "John Smith",
-		username: "johnsmith",
-		email: "johnsmith@email.com",
-		phone: "+1 202 555 0147",
-		accountType: "Checking Account",
-		currency: "USD",
-		balance: "$12,500.00",
-		status: "Active",
-		joined: "Jul 20, 2026",
-	},
-	{
-		id: 2,
-		name: "Sarah Williams",
-		username: "sarahw",
-		email: "sarah@email.com",
-		phone: "+44 7700 900123",
-		accountType: "Savings Account",
-		currency: "GBP",
-		balance: "£8,420.50",
-		status: "Active",
-		joined: "Jul 18, 2026",
-	},
-	{
-		id: 3,
-		name: "Michael Brown",
-		username: "michaelb",
-		email: "michael@email.com",
-		phone: "+1 305 555 0182",
-		accountType: "Business Account",
-		currency: "USD",
-		balance: "$25,800.00",
-		status: "Active",
-		joined: "Jul 15, 2026",
-	},
-	{
-		id: 4,
-		name: "David Johnson",
-		username: "davidj",
-		email: "david@email.com",
-		phone: "+1 415 555 0198",
-		accountType: "Current Account",
-		currency: "USD",
-		balance: "$4,250.00",
-		status: "Blocked",
-		joined: "Jul 12, 2026",
-	},
-	{
-		id: 5,
-		name: "Emily Davis",
-		username: "emilyd",
-		email: "emily@email.com",
-		phone: "+61 412 345 678",
-		accountType: "Investment Account",
-		currency: "AUD",
-		balance: "A$18,750.00",
-		status: "Active",
-		joined: "Jul 10, 2026",
-	},
-	{
-		id: 6,
-		name: "Robert Wilson",
-		username: "robertw",
-		email: "robert@email.com",
-		phone: "+1 212 555 0104",
-		accountType: "Savings Account",
-		currency: "USD",
-		balance: "$7,340.00",
-		status: "Pending",
-		joined: "Jul 08, 2026",
-	},
-];
+function Avatar({ name, image }) {
+	const initials = name
+		.split(" ")
+		.map((word) => word[0])
+		.join("")
+		.slice(0, 2)
+		.toUpperCase();
 
-function StatusBadge({ status }) {
-	const styles = {
-		Active: "bg-emerald-50 text-emerald-700 ring-emerald-600/10",
-		Blocked: "bg-red-50 text-red-700 ring-red-600/10",
-		Pending: "bg-amber-50 text-amber-700 ring-amber-600/10",
-	};
-
-	const Icon = {
-		Active: FaCheckCircle,
-		Blocked: FaBan,
-		Pending: FaFilter,
-	}[status];
+	if (image) {
+		return (
+			<img
+				src={image}
+				alt={name}
+				className="h-9 w-9 shrink-0 rounded-full object-cover"
+			/>
+		);
+	}
 
 	return (
-		<span
-			className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold ring-1 ring-inset ${
-				styles[status] || "bg-gray-50 text-gray-600 ring-gray-600/10"
-			}`}>
-			<Icon size={10} />
-			{status}
-		</span>
+		<div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gray-200 text-xs font-semibold text-gray-500">
+			{initials}
+		</div>
 	);
 }
 
 export default function ManageUsers() {
-	const [search, setSearch] = useState("");
-	const [statusFilter, setStatusFilter] = useState("All");
-	const [accountFilter, setAccountFilter] = useState("All");
-	const [currentPage, setCurrentPage] = useState(1);
+	const navigate = useNavigate();
 
-	const usersPerPage = 5;
+	const [search, setSearch] = useState("");
+	const [selectedUsers, setSelectedUsers] = useState([]);
 
 	const filteredUsers = useMemo(() => {
-		return usersData.filter((user) => {
-			const searchValue = search.toLowerCase();
+		const value = search.toLowerCase().trim();
 
-			const matchesSearch =
-				user.name.toLowerCase().includes(searchValue) ||
-				user.username.toLowerCase().includes(searchValue) ||
-				user.email.toLowerCase().includes(searchValue) ||
-				user.phone.toLowerCase().includes(searchValue);
+		if (!value) {
+			return usersData;
+		}
 
-			const matchesStatus =
-				statusFilter === "All" || user.status === statusFilter;
+		return usersData.filter((user) =>
+			[user.name, user.username, user.email, user.phone].some((field) =>
+				field.toLowerCase().includes(value),
+			),
+		);
+	}, [search]);
 
-			const matchesAccount =
-				accountFilter === "All" || user.accountType === accountFilter;
-
-			return matchesSearch && matchesStatus && matchesAccount;
-		});
-	}, [search, statusFilter, accountFilter]);
-
-	const totalPages = Math.max(
-		1,
-		Math.ceil(filteredUsers.length / usersPerPage),
-	);
-
-	const safePage = Math.min(currentPage, totalPages);
-
-	const displayedUsers = filteredUsers.slice(
-		(safePage - 1) * usersPerPage,
-		safePage * usersPerPage,
-	);
-
-	const handleSearch = (value) => {
-		setSearch(value);
-		setCurrentPage(1);
+	const toggleUser = (id) => {
+		setSelectedUsers((current) =>
+			current.includes(id) ?
+				current.filter((userId) => userId !== id)
+			:	[...current, id],
+		);
 	};
 
-	const handleStatusChange = (value) => {
-		setStatusFilter(value);
-		setCurrentPage(1);
-	};
+	const toggleAll = () => {
+		if (selectedUsers.length === filteredUsers.length) {
+			setSelectedUsers([]);
+			return;
+		}
 
-	const handleAccountChange = (value) => {
-		setAccountFilter(value);
-		setCurrentPage(1);
+		setSelectedUsers(filteredUsers.map((user) => user.id));
 	};
 
 	return (
-		<div className="space-y-6">
-			{/* Page Header */}
+		<div className="min-h-full bg-[#f5f8fb] px-4 py-5 sm:px-6 lg:px-7">
+			{/* Page Title */}
+			<h1 className="mb-6 text-[28px] font-normal text-[#243b55]">
+				First Bank of Delaware users list
+			</h1>
 
-			<motion.div
-				initial={{ opacity: 0, y: 15 }}
-				animate={{ opacity: 1, y: 0 }}
-				className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-				<div>
-					<p className="text-sm font-medium text-emerald-600">
-						User Management
-					</p>
+			{/* Main Card */}
+			<div className="rounded-[5px] bg-white px-4 py-5 shadow-[0_8px_25px_rgba(0,0,0,0.10)] sm:px-6">
+				{/* Top Controls */}
+				<div className="flex flex-col gap-4 border-b border-gray-200 pb-4 md:flex-row md:items-center md:justify-between">
+					<input
+						type="text"
+						value={search}
+						onChange={(e) => setSearch(e.target.value)}
+						placeholder="name, username or email"
+						className="h-7 w-full max-w-[175px] rounded-[3px] border border-gray-200 bg-white px-2 text-[12px] text-gray-600 outline-none transition focus:border-blue-400"
+					/>
 
-					<h1 className="mt-1 text-2xl font-bold text-gray-900 sm:text-3xl">
-						Manage Users
-					</h1>
-
-					<p className="mt-2 text-sm text-gray-500">
-						View, manage and monitor all registered customers.
-					</p>
-				</div>
-
-				<Link
-					to="/admin/dashboard/create-user"
-					className="inline-flex w-fit items-center gap-2 rounded-xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-700">
-					<FaUserPlus size={14} />
-					Create New User
-				</Link>
-			</motion.div>
-
-			{/* Summary Cards */}
-
-			<div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-				<div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
-					<p className="text-sm text-gray-500">Total Users</p>
-
-					<p className="mt-2 text-2xl font-bold text-gray-900">
-						{usersData.length}
-					</p>
-				</div>
-
-				<div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
-					<p className="text-sm text-gray-500">Active Users</p>
-
-					<p className="mt-2 text-2xl font-bold text-emerald-600">
-						{usersData.filter((user) => user.status === "Active").length}
-					</p>
-				</div>
-
-				<div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
-					<p className="text-sm text-gray-500">Pending Users</p>
-
-					<p className="mt-2 text-2xl font-bold text-amber-600">
-						{usersData.filter((user) => user.status === "Pending").length}
-					</p>
-				</div>
-
-				<div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
-					<p className="text-sm text-gray-500">Blocked Users</p>
-
-					<p className="mt-2 text-2xl font-bold text-red-600">
-						{usersData.filter((user) => user.status === "Blocked").length}
-					</p>
-				</div>
-			</div>
-
-			{/* Main Table */}
-
-			<div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
-				{/* Filters */}
-
-				<div className="border-b border-gray-200 p-5">
-					<div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
-						{/* Search */}
-
-						<div className="relative w-full xl:max-w-md">
-							<FaSearch
-								className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
-								size={14}
-							/>
-
-							<input
-								type="search"
-								value={search}
-								onChange={(e) => handleSearch(e.target.value)}
-								placeholder="Search by name, username, email..."
-								className="h-11 w-full rounded-xl border border-gray-200 bg-gray-50 pl-11 pr-4 text-sm text-gray-700 outline-none transition focus:border-emerald-500 focus:bg-white focus:ring-2 focus:ring-emerald-100"
-							/>
-						</div>
-
-						{/* Filters */}
-
-						<div className="flex flex-col gap-3 sm:flex-row">
-							<select
-								value={statusFilter}
-								onChange={(e) => handleStatusChange(e.target.value)}
-								className="h-11 rounded-xl border border-gray-200 bg-white px-4 text-sm text-gray-600 outline-none focus:border-emerald-500">
-								<option value="All">All Status</option>
-
-								<option value="Active">Active</option>
-
-								<option value="Pending">Pending</option>
-
-								<option value="Blocked">Blocked</option>
-							</select>
-
-							<select
-								value={accountFilter}
-								onChange={(e) => handleAccountChange(e.target.value)}
-								className="h-11 rounded-xl border border-gray-200 bg-white px-4 text-sm text-gray-600 outline-none focus:border-emerald-500">
-								<option value="All">All Account Types</option>
-
-								<option value="Checking Account">Checking Account</option>
-
-								<option value="Savings Account">Savings Account</option>
-
-								<option value="Business Account">Business Account</option>
-
-								<option value="Current Account">Current Account</option>
-
-								<option value="Investment Account">Investment Account</option>
-							</select>
-						</div>
-					</div>
+					<button
+						type="button"
+						onClick={() => navigate("/admin/send-email")}
+						className="flex h-7 w-fit items-center gap-1 rounded-[3px] bg-[#42a5f5] px-4 text-[11px] font-medium text-white transition hover:bg-[#3195e7]">
+						<FaEnvelope size={9} />
+						Send Message
+					</button>
 				</div>
 
 				{/* Table */}
-
-				<div className="overflow-x-auto">
-					<table className="w-full min-w-[1100px]">
+				<div className="mt-4 overflow-x-auto">
+					<table className="w-full min-w-[900px] border-collapse text-left">
 						<thead>
-							<tr className="border-b border-gray-100 bg-gray-50/70">
-								<th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-400">
-									User
+							<tr className="border-b border-gray-200 text-[13px] text-[#1f2937]">
+								<th className="w-[45px] px-2 py-3 font-normal">
+									<input
+										type="checkbox"
+										checked={
+											filteredUsers.length > 0 &&
+											selectedUsers.length === filteredUsers.length
+										}
+										onChange={toggleAll}
+										className="h-3 w-3 cursor-pointer"
+									/>
 								</th>
 
-								<th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-400">
-									Contact
+								<th className="px-3 py-3 font-semibold">
+									Client
+									<br />
+									Name
 								</th>
 
-								<th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-400">
-									Account Type
+								<th className="px-3 py-3 font-semibold">Username</th>
+
+								<th className="px-3 py-3 font-semibold">Email</th>
+
+								<th className="px-3 py-3 font-semibold">Phone</th>
+
+								<th className="px-3 py-3 font-semibold">Status</th>
+
+								<th className="px-3 py-3 font-semibold">
+									Date
+									<br />
+									registered
 								</th>
 
-								<th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-400">
-									Balance
-								</th>
-
-								<th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-400">
-									Status
-								</th>
-
-								<th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-400">
-									Joined
-								</th>
-
-								<th className="px-6 py-4 text-right text-xs font-semibold uppercase tracking-wider text-gray-400">
-									Actions
-								</th>
+								<th className="px-3 py-3 font-semibold">Action</th>
 							</tr>
 						</thead>
 
 						<tbody>
-							{displayedUsers.map((user) => (
-								<tr
-									key={user.id}
-									className="border-b border-gray-50 transition hover:bg-gray-50/70">
-									{/* User */}
+							{filteredUsers.length > 0 ?
+								filteredUsers.map((user) => (
+									<tr
+										key={user.id}
+										className="border-b border-gray-200 text-[13px] text-[#111827] hover:bg-gray-50">
+										{/* Checkbox */}
+										<td className="px-2 py-3 align-middle">
+											<input
+												type="checkbox"
+												checked={selectedUsers.includes(user.id)}
+												onChange={() => toggleUser(user.id)}
+												className="h-3 w-3 cursor-pointer"
+											/>
+										</td>
 
-									<td className="px-6 py-5">
-										<div className="flex items-center gap-3">
-											<div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-sm font-bold text-emerald-700">
-												{user.name
-													.split(" ")
-													.map((word) => word[0])
-													.join("")
-													.slice(0, 2)}
-											</div>
+										{/* Client Name */}
+										<td className="px-3 py-2">
+											<div className="flex items-center gap-2">
+												<Avatar name={user.name} image={user.image} />
 
-											<div>
-												<p className="text-sm font-semibold text-gray-800">
+												<span className="max-w-[100px] leading-[18px]">
 													{user.name}
-												</p>
-
-												<p className="mt-0.5 text-xs text-gray-400">
-													@{user.username}
-												</p>
+												</span>
 											</div>
-										</div>
-									</td>
+										</td>
 
-									{/* Contact */}
+										{/* Username */}
+										<td className="whitespace-nowrap px-3 py-2">
+											{user.username}
+										</td>
 
-									<td className="px-6 py-5">
-										<p className="text-sm text-gray-700">{user.email}</p>
+										{/* Email */}
+										<td className="whitespace-nowrap px-3 py-2">
+											{user.email}
+										</td>
 
-										<p className="mt-1 text-xs text-gray-400">{user.phone}</p>
-									</td>
+										{/* Phone */}
+										<td className="whitespace-nowrap px-3 py-2">
+											{user.phone}
+										</td>
 
-									{/* Account */}
+										{/* Status */}
+										<td className="px-3 py-2">
+											<span className="inline-flex rounded-full bg-[#25c53b] px-3 py-[4px] text-[10px] font-medium text-white">
+												{user.status}
+											</span>
+										</td>
 
-									<td className="px-6 py-5">
-										<p className="text-sm text-gray-700">{user.accountType}</p>
+										{/* Date */}
+										<td className="whitespace-nowrap px-3 py-2">{user.date}</td>
 
-										<p className="mt-1 text-xs text-gray-400">
-											{user.currency}
-										</p>
-									</td>
-
-									{/* Balance */}
-
-									<td className="px-6 py-5 text-sm font-semibold text-gray-800">
-										{user.balance}
-									</td>
-
-									{/* Status */}
-
-									<td className="px-6 py-5">
-										<StatusBadge status={user.status} />
-									</td>
-
-									{/* Joined */}
-
-									<td className="px-6 py-5 text-sm text-gray-500">
-										{user.joined}
-									</td>
-
-									{/* Actions */}
-
-									<td className="px-6 py-5">
-										<div className="flex justify-end gap-2">
+										{/* Action */}
+										<td className="px-3 py-2">
 											<button
 												type="button"
-												title="View User"
-												className="rounded-lg border border-gray-200 p-2 text-gray-500 transition hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-600">
-												<FaEye size={14} />
-											</button>
-
-											<button
-												type="button"
-												title="Edit User"
-												className="rounded-lg border border-gray-200 p-2 text-gray-500 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-600">
-												<FaEdit size={14} />
-											</button>
-
-											<button
-												type="button"
-												title={
-													user.status === "Blocked" ?
-														"Unblock User"
-													:	"Block User"
+												onClick={() =>
+													navigate(`/admin/manage-users/${user.id}`)
 												}
-												className={`rounded-lg border p-2 transition ${
-													user.status === "Blocked" ?
-														"border-emerald-200 text-emerald-600 hover:bg-emerald-50"
-													:	"border-red-200 text-red-500 hover:bg-red-50"
-												}`}>
-												{user.status === "Blocked" ?
-													<FaCheckCircle size={14} />
-												:	<FaBan size={14} />}
+												className="bg-[#6258ce] px-4 py-2 text-xs text-white transition hover:bg-[#5148b8]">
+												Manage
 											</button>
-										</div>
+										</td>
+									</tr>
+								))
+							:	<tr>
+									<td
+										colSpan="8"
+										className="py-10 text-center text-sm text-gray-500">
+										No users found.
 									</td>
 								</tr>
-							))}
-
-							{displayedUsers.length === 0 && (
-								<tr>
-									<td colSpan="7" className="px-6 py-16 text-center">
-										<div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-gray-100 text-gray-400">
-											<FaUsers size={22} />
-										</div>
-
-										<h3 className="mt-4 text-sm font-semibold text-gray-800">
-											No users found
-										</h3>
-
-										<p className="mt-1 text-sm text-gray-500">
-											Try changing your search or filter.
-										</p>
-									</td>
-								</tr>
-							)}
+							}
 						</tbody>
 					</table>
 				</div>
 
-				{/* Pagination */}
+				{/* Bottom Controls */}
+				<div className="mt-4 flex flex-col gap-4 border-t border-gray-200 pt-4 sm:flex-row sm:items-center">
+					<select
+						defaultValue="10"
+						className="h-9 w-[72px] rounded-[3px] border border-gray-200 bg-white px-2 text-[12px] text-gray-700 outline-none">
+						<option value="10">10</option>
+						<option value="25">25</option>
+						<option value="50">50</option>
+						<option value="100">100</option>
+					</select>
 
-				<div className="flex flex-col gap-4 border-t border-gray-100 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
-					<p className="text-sm text-gray-500">
-						Showing{" "}
-						<span className="font-semibold text-gray-700">
-							{filteredUsers.length === 0 ?
-								0
-							:	(safePage - 1) * usersPerPage + 1}
-						</span>{" "}
-						to{" "}
-						<span className="font-semibold text-gray-700">
-							{Math.min(safePage * usersPerPage, filteredUsers.length)}
-						</span>{" "}
-						of{" "}
-						<span className="font-semibold text-gray-700">
-							{filteredUsers.length}
-						</span>{" "}
-						users
-					</p>
+					<select
+						defaultValue="id"
+						className="h-9 w-[120px] rounded-[3px] border border-gray-200 bg-white px-2 text-[12px] text-gray-700 outline-none">
+						<option value="id">id</option>
+						<option value="name">name</option>
+						<option value="username">username</option>
+						<option value="email">email</option>
+					</select>
 
-					<div className="flex items-center gap-2">
-						<button
-							type="button"
-							disabled={safePage === 1}
-							onClick={() => setCurrentPage((prev) => prev - 1)}
-							className="flex h-9 w-9 items-center justify-center rounded-lg border border-gray-200 text-gray-500 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40">
-							<FaChevronLeft size={12} />
-						</button>
-
-						{Array.from({ length: totalPages }, (_, index) => index + 1).map(
-							(page) => (
-								<button
-									key={page}
-									type="button"
-									onClick={() => setCurrentPage(page)}
-									className={`h-9 min-w-9 rounded-lg px-2 text-sm font-medium transition ${
-										safePage === page ?
-											"bg-emerald-600 text-white"
-										:	"border border-gray-200 text-gray-600 hover:bg-gray-50"
-									}`}>
-									{page}
-								</button>
-							),
-						)}
-
-						<button
-							type="button"
-							disabled={safePage === totalPages}
-							onClick={() => setCurrentPage((prev) => prev + 1)}
-							className="flex h-9 w-9 items-center justify-center rounded-lg border border-gray-200 text-gray-500 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40">
-							<FaChevronRight size={12} />
-						</button>
-					</div>
+					<select
+						defaultValue="descending"
+						className="h-9 w-[120px] rounded-[3px] border border-gray-200 bg-white px-2 text-[12px] text-gray-700 outline-none">
+						<option value="descending">Descending</option>
+						<option value="ascending">Ascending</option>
+					</select>
 				</div>
 			</div>
 		</div>

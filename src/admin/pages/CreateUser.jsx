@@ -310,7 +310,6 @@ export default function CreateUser() {
 								name="firstName"
 								value={formData.firstName}
 								onChange={handleChange}
-								placeholder="John"
 								icon={FaUser}
 							/>
 
@@ -319,7 +318,6 @@ export default function CreateUser() {
 								name="middleName"
 								value={formData.middleName}
 								onChange={handleChange}
-								placeholder="Michael"
 								icon={FaUser}
 							/>
 
@@ -328,7 +326,6 @@ export default function CreateUser() {
 								name="lastName"
 								value={formData.lastName}
 								onChange={handleChange}
-								placeholder="Smith"
 								icon={FaUser}
 							/>
 
@@ -337,7 +334,6 @@ export default function CreateUser() {
 								name="username"
 								value={formData.username}
 								onChange={handleChange}
-								placeholder="johnsmith"
 								icon={FaUser}
 							/>
 
@@ -347,7 +343,6 @@ export default function CreateUser() {
 								type="email"
 								value={formData.email}
 								onChange={handleChange}
-								placeholder="john@example.com"
 								icon={FaEnvelope}
 							/>
 
@@ -357,7 +352,6 @@ export default function CreateUser() {
 								type="tel"
 								value={formData.phone}
 								onChange={handleChange}
-								placeholder="+1 202 555 0123"
 								icon={FaPhone}
 							/>
 
