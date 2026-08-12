@@ -7,6 +7,7 @@ import {
 	FaCog,
 	FaExchangeAlt,
 } from "react-icons/fa";
+import ManageTransferCodes from "../components/ManageTransferCodes";
 
 const demoUsers = {
 	1: {
@@ -77,6 +78,8 @@ export default function ManageUser() {
 
 	const [showBalanceEditor, setShowBalanceEditor] = useState(false);
 
+	const [showTransferCodes, setShowTransferCodes] = useState(false);
+
 	const [editForm, setEditForm] = useState({
 		account: user.balances.account,
 		bitcoin: user.balances.bitcoin,
@@ -100,6 +103,11 @@ export default function ManageUser() {
 		});
 
 		setShowBalanceEditor(false);
+	};
+
+	const openTransferCodes = (user) => {
+		setSelectedUser(user);
+		setShowTransferCodes(true);
 	};
 
 	return (
@@ -256,10 +264,23 @@ export default function ManageUser() {
 							Transfer Code Settings
 						</div>
 
-						<button className="flex items-center gap-2 bg-[#43a5ef] px-4 py-2 text-xs text-white">
-							<FaCog />
-							Manage Codes
-						</button>
+						<td className="px-3 py-2">
+							<div className="flex gap-2">
+								<button
+									type="button"
+									onClick={() => navigate(`/admin/manage-users/${user.id}`)}
+									className="bg-[#6258ce] px-4 py-2 text-xs text-white transition hover:bg-[#5148b8]">
+									Manage
+								</button>
+
+								<button
+									type="button"
+									onClick={() => openTransferCodes(user)}
+									className="bg-[#42a5f5] px-3 py-2 text-xs text-white transition hover:bg-[#3195e7]">
+									Codes
+								</button>
+							</div>
+						</td>
 					</div>
 
 					<div className="grid grid-cols-2 gap-6 px-7 py-5 md:grid-cols-4">

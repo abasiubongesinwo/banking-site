@@ -1,376 +1,138 @@
-import { motion } from "framer-motion";
+import React from "react";
 import {
-	FaMoneyBillWave,
-	FaClock,
-	FaExchangeAlt,
+	FaDownload,
+	FaUndo,
+	FaShareSquare,
+	FaSignInAlt,
 	FaUsers,
-	FaUserSlash,
+	FaUserTimes,
 	FaUserCheck,
-	FaArrowUp,
-	FaArrowDown,
+	FaSitemap,
 } from "react-icons/fa";
 
-const statistics = [
+const stats = [
 	{
-		title: "Total Deposits",
+		title: "Total Deposit",
 		value: "$50,000",
-		icon: FaMoneyBillWave,
-		description: "Total deposits received",
-		trend: "+12.5%",
-		trendUp: true,
-		iconStyle: "bg-emerald-100 text-emerald-600",
+		icon: FaDownload,
+		iconColor: "text-orange-400",
 	},
+
 	{
-		title: "Pending Deposits",
+		title: "Pending Deposit(s)",
 		value: "$96,000",
-		icon: FaClock,
-		description: "Awaiting processing",
-		trend: "+4.2%",
-		trendUp: true,
-		iconStyle: "bg-amber-100 text-amber-600",
+		icon: FaUndo,
+		iconColor: "text-blue-400",
 	},
+
 	{
 		title: "Total Transfers",
 		value: "$598",
-		icon: FaExchangeAlt,
-		description: "Total transfer transactions",
-		trend: "+8.4%",
-		trendUp: true,
-		iconStyle: "bg-blue-100 text-blue-600",
+		icon: FaShareSquare,
+		iconColor: "text-red-400",
 	},
+
 	{
 		title: "Pending Transfers",
-		value: "$0",
-		icon: FaClock,
-		description: "Transfers awaiting processing",
-		trend: "0%",
-		trendUp: true,
-		iconStyle: "bg-purple-100 text-purple-600",
+		value: "$2,671",
+		icon: FaSignInAlt,
+		iconColor: "text-indigo-400",
 	},
+
 	{
 		title: "Total Users",
 		value: "8",
 		icon: FaUsers,
-		description: "Registered customers",
-		trend: "+2.1%",
-		trendUp: true,
-		iconStyle: "bg-indigo-100 text-indigo-600",
+		iconColor: "text-green-400",
 	},
+
 	{
-		title: "Blocked Users",
+		title: "Block Users",
 		value: "0",
-		icon: FaUserSlash,
-		description: "Currently blocked accounts",
-		trend: "0%",
-		trendUp: true,
-		iconStyle: "bg-red-100 text-red-600",
+		icon: FaUserTimes,
+		iconColor: "text-red-400",
 	},
+
 	{
 		title: "Active Users",
 		value: "8",
 		icon: FaUserCheck,
-		description: "Currently active accounts",
-		trend: "+3.4%",
-		trendUp: true,
-		iconStyle: "bg-green-100 text-green-600",
+		iconColor: "text-green-400",
+	},
+
+	{
+		title: "",
+		value: "",
+		icon: FaSitemap,
+		iconColor: "text-orange-400",
 	},
 ];
-
-const recentTransactions = [
-	{
-		id: "#TRX-1001",
-		user: "John Smith",
-		type: "Deposit",
-		amount: "$5,000",
-		status: "Processed",
-		date: "Today",
-	},
-	{
-		id: "#TRX-1002",
-		user: "Michael Brown",
-		type: "Transfer",
-		amount: "$1,250",
-		status: "Pending",
-		date: "Today",
-	},
-	{
-		id: "#TRX-1003",
-		user: "Sarah Wilson",
-		type: "Deposit",
-		amount: "$3,500",
-		status: "Processed",
-		date: "Yesterday",
-	},
-	{
-		id: "#TRX-1004",
-		user: "David Johnson",
-		type: "Transfer",
-		amount: "$850",
-		status: "Processed",
-		date: "Yesterday",
-	},
-];
-
-function StatusBadge({ status }) {
-	const styles = {
-		Processed: "bg-emerald-100 text-emerald-700",
-		Pending: "bg-amber-100 text-amber-700",
-		Rejected: "bg-red-100 text-red-700",
-	};
-
-	return (
-		<span
-			className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${
-				styles[status] || "bg-gray-100 text-gray-600"
-			}`}>
-			{status}
-		</span>
-	);
-}
 
 export default function Dashboard() {
 	return (
-		<div className="space-y-8">
+		<div className="min-h-screen bg-[#f5f8fb]">
 			{/* Header */}
+			<div className="bg-[#171d35] px-7 pb-14 pt-7">
+				<div className="flex items-start justify-between">
+					<div>
+						<h1 className="text-[20px] font-bold text-white">Dashboard</h1>
 
-			<motion.div
-				initial={{ opacity: 0, y: 15 }}
-				animate={{ opacity: 1, y: 0 }}
-				transition={{ duration: 0.4 }}
-				className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
-				<div>
-					<p className="text-sm font-medium text-emerald-600">Administration</p>
+						<p className="mt-4 text-[13px] font-medium text-gray-300">
+							Welcome, Admin manager!
+						</p>
+					</div>
 
-					<h1 className="mt-1 text-2xl font-bold text-gray-900 sm:text-3xl">
-						Dashboard
-					</h1>
+					<div className="flex gap-3">
+						<button
+							type="button"
+							className="h-10 bg-[#20c83a] px-6 text-[12px] font-medium text-white transition hover:bg-[#19b531]">
+							Deposits
+						</button>
 
-					<p className="mt-2 text-sm text-gray-500">
-						Welcome back, Admin Manager. Here's what's happening with your
-						banking platform.
-					</p>
-				</div>
+						<button
+							type="button"
+							className="h-10 bg-[#42a5f5] px-6 text-[12px] font-medium text-white transition hover:bg-[#3195e7]">
+							Transfers
+						</button>
 
-				<div className="rounded-xl border border-gray-200 bg-white px-4 py-3 shadow-sm">
-					<p className="text-xs text-gray-500">Last updated</p>
-
-					<p className="mt-1 text-sm font-semibold text-gray-800">Just now</p>
-				</div>
-			</motion.div>
-
-			{/* Statistics */}
-
-			<div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
-				{statistics.map((stat, index) => {
-					const Icon = stat.icon;
-
-					return (
-						<motion.div
-							key={stat.title}
-							initial={{
-								opacity: 0,
-								y: 20,
-							}}
-							animate={{
-								opacity: 1,
-								y: 0,
-							}}
-							transition={{
-								delay: index * 0.06,
-								duration: 0.4,
-							}}
-							className="group rounded-2xl border border-gray-200 bg-white p-5 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg">
-							<div className="flex items-start justify-between">
-								<div
-									className={`flex h-12 w-12 items-center justify-center rounded-xl ${stat.iconStyle}`}>
-									<Icon size={20} />
-								</div>
-
-								<div
-									className={`flex items-center gap-1 text-xs font-semibold ${
-										stat.trendUp ? "text-emerald-600" : "text-red-600"
-									}`}>
-									{stat.trendUp ?
-										<FaArrowUp size={9} />
-									:	<FaArrowDown size={9} />}
-									{stat.trend}
-								</div>
-							</div>
-
-							<div className="mt-5">
-								<p className="text-sm font-medium text-gray-500">
-									{stat.title}
-								</p>
-
-								<h2 className="mt-1 text-2xl font-bold text-gray-900">
-									{stat.value}
-								</h2>
-
-								<p className="mt-2 text-xs text-gray-400">{stat.description}</p>
-							</div>
-						</motion.div>
-					);
-				})}
-			</div>
-
-			{/* Overview */}
-
-			<div className="grid gap-6 xl:grid-cols-3">
-				{/* Transaction Overview */}
-
-				<div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm xl:col-span-2">
-					<div className="flex items-center justify-between">
-						<div>
-							<h2 className="text-lg font-bold text-gray-900">
-								Transaction Overview
-							</h2>
-
-							<p className="mt-1 text-sm text-gray-500">
-								Recent deposits and transfers
-							</p>
-						</div>
-
-						<button className="text-sm font-semibold text-emerald-600 hover:text-emerald-700">
-							View All
+						<button
+							type="button"
+							className="h-10 bg-[#6258ce] px-6 text-[12px] font-medium text-white transition hover:bg-[#5148b8]">
+							Users
 						</button>
 					</div>
-
-					<div className="mt-6 overflow-x-auto">
-						<table className="w-full min-w-[700px]">
-							<thead>
-								<tr className="border-b border-gray-100 text-left">
-									<th className="pb-4 text-xs font-semibold uppercase tracking-wide text-gray-400">
-										Transaction
-									</th>
-
-									<th className="pb-4 text-xs font-semibold uppercase tracking-wide text-gray-400">
-										User
-									</th>
-
-									<th className="pb-4 text-xs font-semibold uppercase tracking-wide text-gray-400">
-										Type
-									</th>
-
-									<th className="pb-4 text-xs font-semibold uppercase tracking-wide text-gray-400">
-										Amount
-									</th>
-
-									<th className="pb-4 text-xs font-semibold uppercase tracking-wide text-gray-400">
-										Status
-									</th>
-
-									<th className="pb-4 text-xs font-semibold uppercase tracking-wide text-gray-400">
-										Date
-									</th>
-								</tr>
-							</thead>
-
-							<tbody>
-								{recentTransactions.map((transaction) => (
-									<tr
-										key={transaction.id}
-										className="border-b border-gray-50 last:border-0">
-										<td className="py-4 text-sm font-semibold text-gray-800">
-											{transaction.id}
-										</td>
-
-										<td className="py-4 text-sm text-gray-600">
-											{transaction.user}
-										</td>
-
-										<td className="py-4 text-sm text-gray-600">
-											{transaction.type}
-										</td>
-
-										<td className="py-4 text-sm font-semibold text-gray-800">
-											{transaction.amount}
-										</td>
-
-										<td className="py-4">
-											<StatusBadge status={transaction.status} />
-										</td>
-
-										<td className="py-4 text-sm text-gray-500">
-											{transaction.date}
-										</td>
-									</tr>
-								))}
-							</tbody>
-						</table>
-					</div>
 				</div>
+			</div>
 
-				{/* Platform Summary */}
+			{/* Statistics Card */}
+			<div className="-mt-7 px-7">
+				<div className="rounded-[4px] bg-white shadow-[0_12px_30px_rgba(0,0,0,0.12)]">
+					<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+						{stats.map((stat, index) => {
+							const Icon = stat.icon;
 
-				<div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
-					<h2 className="text-lg font-bold text-gray-900">Platform Summary</h2>
+							return (
+								<div
+									key={index}
+									className={`flex min-h-[100px] items-center gap-8 px-10 py-6 ${
+										index % 4 !== 3 ? "border-r border-gray-200" : ""
+									} ${index >= 4 ? "border-t border-gray-200" : ""}`}>
+									<Icon
+										className={`shrink-0 ${stat.iconColor}`}
+										size={34}
+										strokeWidth={1}
+									/>
 
-					<p className="mt-1 text-sm text-gray-500">
-						Account activity overview
-					</p>
+									<div>
+										<p className="text-[13px] text-[#7b8794]">{stat.title}</p>
 
-					<div className="mt-8 space-y-6">
-						<div>
-							<div className="flex justify-between text-sm">
-								<span className="text-gray-500">Active Users</span>
-
-								<span className="font-semibold text-gray-800">8 / 8</span>
-							</div>
-
-							<div className="mt-2 h-2 overflow-hidden rounded-full bg-gray-100">
-								<div className="h-full w-full rounded-full bg-emerald-500" />
-							</div>
-						</div>
-
-						<div>
-							<div className="flex justify-between text-sm">
-								<span className="text-gray-500">Processed Deposits</span>
-
-								<span className="font-semibold text-gray-800">78%</span>
-							</div>
-
-							<div className="mt-2 h-2 overflow-hidden rounded-full bg-gray-100">
-								<div className="h-full w-[78%] rounded-full bg-blue-500" />
-							</div>
-						</div>
-
-						<div>
-							<div className="flex justify-between text-sm">
-								<span className="text-gray-500">Processed Transfers</span>
-
-								<span className="font-semibold text-gray-800">92%</span>
-							</div>
-
-							<div className="mt-2 h-2 overflow-hidden rounded-full bg-gray-100">
-								<div className="h-full w-[92%] rounded-full bg-purple-500" />
-							</div>
-						</div>
-
-						<div>
-							<div className="flex justify-between text-sm">
-								<span className="text-gray-500">Blocked Accounts</span>
-
-								<span className="font-semibold text-gray-800">0%</span>
-							</div>
-
-							<div className="mt-2 h-2 overflow-hidden rounded-full bg-gray-100">
-								<div className="h-full w-0 rounded-full bg-red-500" />
-							</div>
-						</div>
-					</div>
-
-					<div className="mt-8 rounded-xl bg-emerald-50 p-4">
-						<p className="text-sm font-semibold text-emerald-700">
-							System Status
-						</p>
-
-						<div className="mt-2 flex items-center gap-2">
-							<span className="h-2.5 w-2.5 rounded-full bg-emerald-500" />
-
-							<span className="text-sm text-gray-600">
-								All systems operational
-							</span>
-						</div>
+										<p className="mt-2 text-[14px] text-[#243b55]">
+											{stat.value}
+										</p>
+									</div>
+								</div>
+							);
+						})}
 					</div>
 				</div>
 			</div>

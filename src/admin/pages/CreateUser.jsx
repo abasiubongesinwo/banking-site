@@ -1,572 +1,646 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import {
-	FaArrowLeft,
-	FaUser,
-	FaEnvelope,
-	FaPhone,
-	FaGlobe,
-	FaWallet,
-	FaLock,
-	FaEye,
-	FaEyeSlash,
-	FaSave,
-} from "react-icons/fa";
+import React, { useMemo, useState } from "react";
 
 const accountTypes = [
 	"Checking Account",
-	"Savings Account",
+	"Saving Account",
 	"Fixed Deposit Account",
 	"Current Account",
-	"Money Market Account",
-	"Certificate of Deposit Account",
 	"Crypto Currency Account",
 	"Business Account",
-	"Corporate Business Account",
 	"Non Resident Account",
+	"Cooperate Business Account",
 	"Investment Account",
-	"Retirement Account (IRA)",
-	"Joint Account",
-	"Trust Account",
-	"Student Account",
-	"Senior Citizen Account",
-	"Premium Account",
-	"Foreign Currency Account",
-	"Escrow Account",
 ];
 
-const currencies = [
-	{ code: "USD", symbol: "$", name: "United States Dollar" },
-	{ code: "EUR", symbol: "€", name: "Euro" },
-	{ code: "GBP", symbol: "£", name: "British Pound" },
-	{ code: "JPY", symbol: "¥", name: "Japanese Yen" },
-	{ code: "CNY", symbol: "¥", name: "Chinese Yuan" },
-	{ code: "CAD", symbol: "C$", name: "Canadian Dollar" },
-	{ code: "AUD", symbol: "A$", name: "Australian Dollar" },
-	{ code: "CHF", symbol: "CHF", name: "Swiss Franc" },
-	{ code: "INR", symbol: "₹", name: "Indian Rupee" },
-	{ code: "BRL", symbol: "R$", name: "Brazilian Real" },
-	{ code: "MXN", symbol: "MX$", name: "Mexican Peso" },
-	{ code: "ZAR", symbol: "R", name: "South African Rand" },
-	{ code: "SGD", symbol: "S$", name: "Singapore Dollar" },
-	{ code: "HKD", symbol: "HK$", name: "Hong Kong Dollar" },
-	{ code: "SEK", symbol: "kr", name: "Swedish Krona" },
-	{ code: "NOK", symbol: "kr", name: "Norwegian Krone" },
-	{ code: "DKK", symbol: "kr", name: "Danish Krone" },
-	{ code: "NZD", symbol: "NZ$", name: "New Zealand Dollar" },
-	{ code: "KRW", symbol: "₩", name: "South Korean Won" },
-	{ code: "TRY", symbol: "₺", name: "Turkish Lira" },
-	{ code: "AED", symbol: "د.إ", name: "UAE Dirham" },
-	{ code: "SAR", symbol: "﷼", name: "Saudi Riyal" },
-	{ code: "PLN", symbol: "zł", name: "Polish Zloty" },
-	{ code: "THB", symbol: "฿", name: "Thai Baht" },
-	{ code: "IDR", symbol: "Rp", name: "Indonesian Rupiah" },
-	{ code: "MYR", symbol: "RM", name: "Malaysian Ringgit" },
-	{ code: "PHP", symbol: "₱", name: "Philippine Peso" },
-	{ code: "KES", symbol: "KSh", name: "Kenyan Shilling" },
-	{ code: "NGN", symbol: "₦", name: "Nigerian Naira" },
+const countryCodes = [
+	"AF",
+	"AL",
+	"DZ",
+	"AD",
+	"AO",
+	"AG",
+	"AR",
+	"AM",
+	"AU",
+	"AT",
+	"AZ",
+	"BS",
+	"BH",
+	"BD",
+	"BB",
+	"BY",
+	"BE",
+	"BZ",
+	"BJ",
+	"BT",
+	"BO",
+	"BA",
+	"BW",
+	"BR",
+	"BN",
+	"BG",
+	"BF",
+	"BI",
+	"CV",
+	"KH",
+	"CM",
+	"CA",
+	"CF",
+	"TD",
+	"CL",
+	"CN",
+	"CO",
+	"KM",
+	"CG",
+	"CD",
+	"CR",
+	"CI",
+	"HR",
+	"CU",
+	"CY",
+	"CZ",
+	"DK",
+	"DJ",
+	"DM",
+	"DO",
+	"EC",
+	"EG",
+	"SV",
+	"GQ",
+	"ER",
+	"EE",
+	"SZ",
+	"ET",
+	"FJ",
+	"FI",
+	"FR",
+	"GA",
+	"GM",
+	"GE",
+	"DE",
+	"GH",
+	"GR",
+	"GD",
+	"GT",
+	"GN",
+	"GW",
+	"GY",
+	"HT",
+	"HN",
+	"HU",
+	"IS",
+	"IN",
+	"ID",
+	"IR",
+	"IQ",
+	"IE",
+	"IL",
+	"IT",
+	"JM",
+	"JP",
+	"JO",
+	"KZ",
+	"KE",
+	"KI",
+	"KP",
+	"KR",
+	"KW",
+	"KG",
+	"LA",
+	"LV",
+	"LB",
+	"LS",
+	"LR",
+	"LY",
+	"LI",
+	"LT",
+	"LU",
+	"MG",
+	"MW",
+	"MY",
+	"MV",
+	"ML",
+	"MT",
+	"MH",
+	"MR",
+	"MU",
+	"MX",
+	"FM",
+	"MD",
+	"MC",
+	"MN",
+	"ME",
+	"MA",
+	"MZ",
+	"MM",
+	"NA",
+	"NR",
+	"NP",
+	"NL",
+	"NZ",
+	"NI",
+	"NE",
+	"NG",
+	"MK",
+	"NO",
+	"OM",
+	"PK",
+	"PW",
+	"PA",
+	"PG",
+	"PY",
+	"PE",
+	"PH",
+	"PL",
+	"PT",
+	"QA",
+	"RO",
+	"RU",
+	"RW",
+	"KN",
+	"LC",
+	"VC",
+	"WS",
+	"SM",
+	"ST",
+	"SA",
+	"SN",
+	"RS",
+	"SC",
+	"SL",
+	"SG",
+	"SK",
+	"SI",
+	"SB",
+	"SO",
+	"ZA",
+	"SS",
+	"ES",
+	"LK",
+	"SD",
+	"SR",
+	"SE",
+	"CH",
+	"SY",
+	"TW",
+	"TJ",
+	"TZ",
+	"TH",
+	"TL",
+	"TG",
+	"TO",
+	"TT",
+	"TN",
+	"TR",
+	"TM",
+	"TV",
+	"UG",
+	"UA",
+	"AE",
+	"GB",
+	"US",
+	"UY",
+	"UZ",
+	"VU",
+	"VA",
+	"VE",
+	"VN",
+	"YE",
+	"ZM",
+	"ZW",
 ];
 
-const countries = [
-	"United States",
-	"United Kingdom",
-	"Canada",
-	"Australia",
-	"Germany",
-	"France",
-	"United Arab Emirates",
-	"Saudi Arabia",
-	"Nigeria",
-	"South Africa",
-	"Kenya",
-	"Ghana",
-	"India",
-	"China",
-	"Japan",
-	"Singapore",
-	"Malaysia",
-	"Brazil",
-	"Mexico",
-	"Netherlands",
-	"Switzerland",
-	"Sweden",
-	"Norway",
-	"Denmark",
-	"New Zealand",
-	"Turkey",
-	"Poland",
-	"Philippines",
-	"Indonesia",
-];
+const countryNames = new Intl.DisplayNames(["en"], {
+	type: "region",
+});
 
-function InputField({
-	label,
-	name,
-	value,
-	onChange,
-	type = "text",
-	placeholder,
-	icon: Icon,
-	required = true,
-}) {
-	return (
-		<div>
-			<label
-				htmlFor={name}
-				className="mb-2 block text-sm font-semibold text-gray-700">
-				{label}
-				{required && <span className="ml-1 text-red-500">*</span>}
-			</label>
+const countries = countryCodes
+	.map((code) => ({
+		code,
+		name: countryNames.of(code),
+	}))
+	.filter((country) => country.name)
+	.sort((a, b) => a.name.localeCompare(b.name));
 
-			<div className="relative">
-				{Icon && (
-					<Icon
-						size={15}
-						className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
-					/>
-				)}
+const initialForm = {
+	firstName: "",
+	middleName: "",
+	lastName: "",
+	username: "",
+	email: "",
+	phoneNumber: "",
+	dateOfBirth: "",
+	address: "",
+	nationality: "Nigeria",
+	accountType: "",
+	accountNumber: "",
+	imf: "",
+	swift: "",
+	cot: "",
+	transactionPin: "",
+	profilePhoto: null,
+	password: "",
+	confirmPassword: "",
+};
 
-				<input
-					id={name}
-					name={name}
-					type={type}
-					value={value}
-					onChange={onChange}
-					placeholder={placeholder}
-					required={required}
-					className={`h-12 w-full rounded-xl border border-gray-200 bg-gray-50 text-sm text-gray-800 outline-none transition placeholder:text-gray-400 focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10 ${
-						Icon ? "pl-11 pr-4" : "px-4"
-					}`}
-				/>
-			</div>
-		</div>
-	);
+function generateNumber(length = 10) {
+	let result = "";
+
+	for (let i = 0; i < length; i++) {
+		result += Math.floor(Math.random() * 10);
+	}
+
+	return result;
 }
 
-function SelectField({ label, name, value, onChange, options, icon: Icon }) {
-	return (
-		<div>
-			<label
-				htmlFor={name}
-				className="mb-2 block text-sm font-semibold text-gray-700">
-				{label}
-				<span className="ml-1 text-red-500">*</span>
-			</label>
-
-			<div className="relative">
-				{Icon && (
-					<Icon
-						size={15}
-						className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
-					/>
-				)}
-
-				<select
-					id={name}
-					name={name}
-					value={value}
-					onChange={onChange}
-					required
-					className={`h-12 w-full appearance-none rounded-xl border border-gray-200 bg-gray-50 text-sm text-gray-700 outline-none transition focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10 ${
-						Icon ? "pl-11 pr-4" : "px-4"
-					}`}>
-					<option value="">Select {label}</option>
-
-					{options.map((option) => {
-						const value = typeof option === "string" ? option : option.code;
-
-						const text =
-							typeof option === "string" ? option : (
-								`${option.name} (${option.code})`
-							);
-
-						return (
-							<option key={value} value={value}>
-								{text}
-							</option>
-						);
-					})}
-				</select>
-			</div>
-		</div>
-	);
+function generateCode() {
+	return generateNumber(7);
 }
 
 export default function CreateUser() {
-	const navigate = useNavigate();
+	const [form, setForm] = useState(initialForm);
+	const [message, setMessage] = useState("");
+	const [preview, setPreview] = useState("");
 
-	const [showPassword, setShowPassword] = useState(false);
-	const [showPin, setShowPin] = useState(false);
-	const [isSubmitting, setIsSubmitting] = useState(false);
+	const fullName = useMemo(() => {
+		return [form.firstName, form.middleName, form.lastName]
+			.filter(Boolean)
+			.join(" ");
+	}, [form.firstName, form.middleName, form.lastName]);
 
-	const [formData, setFormData] = useState({
-		firstName: "",
-		middleName: "",
-		lastName: "",
-		username: "",
-		email: "",
-		phone: "",
-		country: "",
-		accountType: "",
-		currency: "USD",
-		transactionPin: "",
-		password: "",
-		confirmPassword: "",
-		initialBalance: "0",
-	});
+	const handleChange = (e) => {
+		const { name, value } = e.target;
 
-	const handleChange = (event) => {
-		const { name, value } = event.target;
-
-		setFormData((previous) => ({
-			...previous,
+		setForm((current) => ({
+			...current,
 			[name]: value,
+		}));
+
+		setMessage("");
+	};
+
+	const handleGenerateAccountNumber = () => {
+		setForm((current) => ({
+			...current,
+			accountNumber: generateNumber(10),
 		}));
 	};
 
-	const handleSubmit = async (event) => {
-		event.preventDefault();
-
-		if (formData.password !== formData.confirmPassword) {
-			alert("Passwords do not match.");
-			return;
-		}
-
-		if (formData.transactionPin.length !== 4) {
-			alert("Transaction PIN must contain exactly 4 digits.");
-			return;
-		}
-
-		try {
-			setIsSubmitting(true);
-
-			// Temporary frontend submission.
-			// We will connect this to the backend API later.
-
-			await new Promise((resolve) => setTimeout(resolve, 800));
-
-			console.log("Create user payload:", formData);
-
-			alert("User created successfully.");
-
-			navigate("/admin/users");
-		} catch (error) {
-			console.error("Create user error:", error);
-			alert("Unable to create user.");
-		} finally {
-			setIsSubmitting(false);
-		}
+	const handleGenerateCodes = () => {
+		setForm((current) => ({
+			...current,
+			imf: generateCode(),
+			swift: generateCode(),
+			cot: generateCode(),
+			transactionPin: generateNumber(4),
+		}));
 	};
 
+	const handlePhotoChange = (e) => {
+		const file = e.target.files?.[0];
+
+		if (!file) {
+			return;
+		}
+
+		setForm((current) => ({
+			...current,
+			profilePhoto: file,
+		}));
+
+		setPreview(URL.createObjectURL(file));
+	};
+
+	const handleSubmit = (e) => {
+		e.preventDefault();
+
+		if (form.password !== form.confirmPassword) {
+			setMessage("Passwords do not match.");
+			return;
+		}
+
+		if (!form.accountType) {
+			setMessage("Please select an account type.");
+			return;
+		}
+
+		/*
+		 * Backend will be connected here later.
+		 *
+		 * For now, this only demonstrates the admin UI.
+		 */
+
+		console.log("New user:", {
+			...form,
+			fullName,
+		});
+
+		setMessage("User information is ready to be submitted.");
+
+		// Do not reset yet so the admin can review the information.
+	};
+
+	const inputClass =
+		"mt-2 h-10 w-full rounded-[3px] border border-[#dfe5ec] bg-[#f9fafb] px-3 text-[13px] text-[#243b55] outline-none transition focus:border-[#42a5f5] focus:bg-white";
+
+	const labelClass = "text-[13px] text-[#111827]";
+
 	return (
-		<div className="mx-auto max-w-6xl space-y-6">
-			{/* Header */}
+		<div className="min-h-full bg-[#f5f8fb] px-4 py-5 sm:px-6 lg:px-7">
+			<h1 className="mb-6 text-[28px] font-normal text-[#243b55]">
+				Create New User
+			</h1>
 
-			<div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-				<div>
-					<Link
-						to="/admin/users"
-						className="mb-3 inline-flex items-center gap-2 text-sm font-medium text-gray-500 transition hover:text-emerald-600">
-						<FaArrowLeft size={12} />
-						Back to Users
-					</Link>
+			<div className="rounded-[5px] bg-white px-4 py-6 shadow-[0_8px_25px_rgba(0,0,0,0.10)] sm:px-6 lg:px-8">
+				<form onSubmit={handleSubmit}>
+					{/* PERSONAL INFORMATION */}
+					<div className="mb-8">
+						<h2 className="mb-5 border-b border-gray-200 pb-3 text-[17px] font-medium text-[#243b55]">
+							Personal Information
+						</h2>
 
-					<h1 className="text-2xl font-bold text-gray-900 sm:text-3xl">
-						Create New User
-					</h1>
-
-					<p className="mt-2 text-sm text-gray-500">
-						Create and configure a new customer banking account.
-					</p>
-				</div>
-			</div>
-
-			<form onSubmit={handleSubmit}>
-				<div className="space-y-6">
-					{/* Personal Information */}
-
-					<section className="rounded-2xl border border-gray-200 bg-white shadow-sm">
-						<div className="border-b border-gray-100 px-6 py-5">
-							<div className="flex items-center gap-3">
-								<div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-100 text-emerald-600">
-									<FaUser size={16} />
-								</div>
-
-								<div>
-									<h2 className="font-bold text-gray-900">
-										Personal Information
-									</h2>
-
-									<p className="mt-1 text-xs text-gray-500">
-										Enter the customer's legal information.
-									</p>
-								</div>
+						<div className="grid grid-cols-1 gap-5">
+							<div>
+								<label className={labelClass}>Firstname</label>
+								<input
+									name="firstName"
+									value={form.firstName}
+									onChange={handleChange}
+									className={inputClass}
+								/>
 							</div>
-						</div>
-
-						<div className="grid gap-5 p-6 md:grid-cols-3">
-							<InputField
-								label="Legal First Name"
-								name="firstName"
-								value={formData.firstName}
-								onChange={handleChange}
-								icon={FaUser}
-							/>
-
-							<InputField
-								label="Middle Name"
-								name="middleName"
-								value={formData.middleName}
-								onChange={handleChange}
-								icon={FaUser}
-							/>
-
-							<InputField
-								label="Legal Last Name"
-								name="lastName"
-								value={formData.lastName}
-								onChange={handleChange}
-								icon={FaUser}
-							/>
-
-							<InputField
-								label="Username"
-								name="username"
-								value={formData.username}
-								onChange={handleChange}
-								icon={FaUser}
-							/>
-
-							<InputField
-								label="Email Address"
-								name="email"
-								type="email"
-								value={formData.email}
-								onChange={handleChange}
-								icon={FaEnvelope}
-							/>
-
-							<InputField
-								label="Phone Number"
-								name="phone"
-								type="tel"
-								value={formData.phone}
-								onChange={handleChange}
-								icon={FaPhone}
-							/>
-
-							<SelectField
-								label="Country"
-								name="country"
-								value={formData.country}
-								onChange={handleChange}
-								options={countries}
-								icon={FaGlobe}
-							/>
-						</div>
-					</section>
-
-					{/* Account Information */}
-
-					<section className="rounded-2xl border border-gray-200 bg-white shadow-sm">
-						<div className="border-b border-gray-100 px-6 py-5">
-							<div className="flex items-center gap-3">
-								<div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-100 text-blue-600">
-									<FaWallet size={16} />
-								</div>
-
-								<div>
-									<h2 className="font-bold text-gray-900">
-										Account Information
-									</h2>
-
-									<p className="mt-1 text-xs text-gray-500">
-										Configure the customer's banking account.
-									</p>
-								</div>
-							</div>
-						</div>
-
-						<div className="grid gap-5 p-6 md:grid-cols-2">
-							<SelectField
-								label="Account Type"
-								name="accountType"
-								value={formData.accountType}
-								onChange={handleChange}
-								options={accountTypes}
-								icon={FaWallet}
-							/>
-
-							<SelectField
-								label="Currency"
-								name="currency"
-								value={formData.currency}
-								onChange={handleChange}
-								options={currencies}
-								icon={FaWallet}
-							/>
-
-							<InputField
-								label="Initial Balance"
-								name="initialBalance"
-								type="number"
-								value={formData.initialBalance}
-								onChange={handleChange}
-								placeholder="0.00"
-								icon={FaWallet}
-							/>
-						</div>
-					</section>
-
-					{/* Security */}
-
-					<section className="rounded-2xl border border-gray-200 bg-white shadow-sm">
-						<div className="border-b border-gray-100 px-6 py-5">
-							<div className="flex items-center gap-3">
-								<div className="flex h-10 w-10 items-center justify-center rounded-xl bg-purple-100 text-purple-600">
-									<FaLock size={16} />
-								</div>
-
-								<div>
-									<h2 className="font-bold text-gray-900">
-										Security Credentials
-									</h2>
-
-									<p className="mt-1 text-xs text-gray-500">
-										Set the login and transaction credentials.
-									</p>
-								</div>
-							</div>
-						</div>
-
-						<div className="grid gap-5 p-6 md:grid-cols-2">
-							{/* Transaction PIN */}
 
 							<div>
-								<label
-									htmlFor="transactionPin"
-									className="mb-2 block text-sm font-semibold text-gray-700">
-									4-Digit Transaction PIN
-									<span className="ml-1 text-red-500">*</span>
-								</label>
-
-								<div className="relative">
-									<FaLock
-										size={14}
-										className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
-									/>
-
-									<input
-										id="transactionPin"
-										name="transactionPin"
-										type={showPin ? "text" : "password"}
-										maxLength={4}
-										inputMode="numeric"
-										pattern="[0-9]{4}"
-										value={formData.transactionPin}
-										onChange={(event) =>
-											setFormData((previous) => ({
-												...previous,
-												transactionPin: event.target.value.replace(/\D/g, ""),
-											}))
-										}
-										placeholder="••••"
-										required
-										className="h-12 w-full rounded-xl border border-gray-200 bg-gray-50 pl-11 pr-12 text-sm outline-none transition focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10"
-									/>
-
-									<button
-										type="button"
-										onClick={() => setShowPin(!showPin)}
-										className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
-										{showPin ?
-											<FaEyeSlash />
-										:	<FaEye />}
-									</button>
-								</div>
-
-								<p className="mt-2 text-xs text-gray-400">
-									Used to authorize transactions.
-								</p>
+								<label className={labelClass}>Middle Name</label>
+								<input
+									name="middleName"
+									value={form.middleName}
+									onChange={handleChange}
+									className={inputClass}
+								/>
 							</div>
-
-							{/* Password */}
 
 							<div>
-								<label
-									htmlFor="password"
-									className="mb-2 block text-sm font-semibold text-gray-700">
-									Password
-									<span className="ml-1 text-red-500">*</span>
-								</label>
-
-								<div className="relative">
-									<FaLock
-										size={14}
-										className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
-									/>
-
-									<input
-										id="password"
-										name="password"
-										type={showPassword ? "text" : "password"}
-										value={formData.password}
-										onChange={handleChange}
-										placeholder="Enter password"
-										required
-										minLength={8}
-										className="h-12 w-full rounded-xl border border-gray-200 bg-gray-50 pl-11 pr-12 text-sm outline-none transition focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10"
-									/>
-
-									<button
-										type="button"
-										onClick={() => setShowPassword(!showPassword)}
-										className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
-										{showPassword ?
-											<FaEyeSlash />
-										:	<FaEye />}
-									</button>
-								</div>
-
-								<p className="mt-2 text-xs text-gray-400">
-									Minimum 8 characters.
-								</p>
+								<label className={labelClass}>Last Name</label>
+								<input
+									name="lastName"
+									value={form.lastName}
+									onChange={handleChange}
+									className={inputClass}
+								/>
 							</div>
 
-							{/* Confirm Password */}
+							<div>
+								<label className={labelClass}>Username</label>
+								<input
+									name="username"
+									value={form.username}
+									onChange={handleChange}
+									className={inputClass}
+								/>
+							</div>
 
-							<InputField
-								label="Confirm Password"
-								name="confirmPassword"
-								type={showPassword ? "text" : "password"}
-								value={formData.confirmPassword}
-								onChange={handleChange}
-								placeholder="Confirm password"
-								icon={FaLock}
-							/>
+							<div>
+								<label className={labelClass}>Email</label>
+								<input
+									type="email"
+									name="email"
+									value={form.email}
+									onChange={handleChange}
+									className={inputClass}
+								/>
+							</div>
+
+							<div>
+								<label className={labelClass}>Phone Number</label>
+								<input
+									type="tel"
+									name="phoneNumber"
+									value={form.phoneNumber}
+									onChange={handleChange}
+									className={inputClass}
+								/>
+							</div>
+
+							<div>
+								<label className={labelClass}>Date of birth</label>
+								<input
+									type="date"
+									name="dateOfBirth"
+									value={form.dateOfBirth}
+									onChange={handleChange}
+									className={inputClass}
+								/>
+							</div>
+
+							<div>
+								<label className={labelClass}>Address</label>
+								<input
+									name="address"
+									value={form.address}
+									onChange={handleChange}
+									className={inputClass}
+								/>
+							</div>
 						</div>
-					</section>
-
-					{/* Actions */}
-
-					<div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
-						<Link
-							to="/admin/users"
-							className="inline-flex h-12 items-center justify-center rounded-xl border border-gray-200 bg-white px-6 text-sm font-semibold text-gray-600 transition hover:bg-gray-50">
-							Cancel
-						</Link>
-
-						<button
-							type="submit"
-							disabled={isSubmitting}
-							className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-emerald-600 px-7 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-60">
-							<FaSave size={14} />
-
-							{isSubmitting ? "Creating User..." : "Create User"}
-						</button>
 					</div>
-				</div>
-			</form>
+
+					{/* ACCOUNT INFORMATION */}
+					<div className="mb-8">
+						<h2 className="mb-5 border-b border-gray-200 pb-3 text-[17px] font-medium text-[#243b55]">
+							Account Information
+						</h2>
+
+						<div className="grid grid-cols-1 gap-5">
+							<div>
+								<label className={labelClass}>Nationality</label>
+
+								<select
+									name="nationality"
+									value={form.nationality}
+									onChange={handleChange}
+									className={inputClass}>
+									<option value="">Select Nationality</option>
+
+									{countries.map((country) => (
+										<option key={country.code} value={country.name}>
+											{country.name}
+										</option>
+									))}
+								</select>
+							</div>
+
+							<div>
+								<label className={labelClass}>Account Type</label>
+
+								<select
+									name="accountType"
+									value={form.accountType}
+									onChange={handleChange}
+									className={inputClass}>
+									<option value="">Please select Account Type</option>
+
+									{accountTypes.map((type) => (
+										<option key={type} value={type}>
+											{type}
+										</option>
+									))}
+								</select>
+							</div>
+
+							<div>
+								<label className={labelClass}>Account Number</label>
+
+								<div className="flex gap-2">
+									<input
+										name="accountNumber"
+										value={form.accountNumber}
+										onChange={handleChange}
+										className={inputClass}
+									/>
+
+									<button
+										type="button"
+										onClick={handleGenerateAccountNumber}
+										className="mt-2 h-10 shrink-0 rounded-[3px] bg-[#42a5f5] px-4 text-[12px] text-white hover:bg-[#3195e7]">
+										Generate
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					{/* TRANSFER CODES */}
+					<div className="mb-8">
+						<div className="mb-5 flex flex-col justify-between gap-3 border-b border-gray-200 pb-3 sm:flex-row sm:items-center">
+							<h2 className="text-[17px] font-medium text-[#243b55]">
+								Transfer Codes
+							</h2>
+
+							<button
+								type="button"
+								onClick={handleGenerateCodes}
+								className="w-fit rounded-[3px] bg-[#6258ce] px-4 py-2 text-[12px] text-white hover:bg-[#5148b8]">
+								Generate Codes
+							</button>
+						</div>
+
+						<div className="grid grid-cols-1 gap-5">
+							<div>
+								<label className={labelClass}>IMF</label>
+								<input
+									name="imf"
+									value={form.imf}
+									onChange={handleChange}
+									className={inputClass}
+								/>
+							</div>
+
+							<div>
+								<label className={labelClass}>SWIFT</label>
+								<input
+									name="swift"
+									value={form.swift}
+									onChange={handleChange}
+									className={inputClass}
+								/>
+							</div>
+
+							<div>
+								<label className={labelClass}>COT</label>
+								<input
+									name="cot"
+									value={form.cot}
+									onChange={handleChange}
+									className={inputClass}
+								/>
+							</div>
+
+							<div>
+								<label className={labelClass}>4 Digit Transaction Pin</label>
+
+								<input
+									name="transactionPin"
+									value={form.transactionPin}
+									onChange={handleChange}
+									maxLength={4}
+									inputMode="numeric"
+									className={inputClass}
+								/>
+							</div>
+						</div>
+					</div>
+
+					{/* PROFILE PHOTO */}
+					<div className="mb-8">
+						<h2 className="mb-5 border-b border-gray-200 pb-3 text-[17px] font-medium text-[#243b55]">
+							Profile Photo
+						</h2>
+
+						<div>
+							<label className={labelClass}>Upload Profile photo</label>
+
+							<input
+								type="file"
+								accept="image/*"
+								onChange={handlePhotoChange}
+								className="mt-2 block h-10 w-full rounded-[3px] border border-[#dfe5ec] bg-[#f9fafb] text-[12px] text-gray-600 file:mr-3 file:h-full file:border-0 file:bg-gray-100 file:px-3"
+							/>
+
+							{preview && (
+								<img
+									src={preview}
+									alt="Profile preview"
+									className="mt-4 h-20 w-20 rounded-full object-cover"
+								/>
+							)}
+						</div>
+					</div>
+
+					{/* LOGIN INFORMATION */}
+					<div className="mb-8">
+						<div className="grid grid-cols-1 gap-5">
+							<div>
+								<label className={labelClass}>Password</label>
+
+								<input
+									type="password"
+									name="password"
+									value={form.password}
+									onChange={handleChange}
+									className={inputClass}
+								/>
+							</div>
+
+							<div>
+								<label className={labelClass}>Confirm Password</label>
+
+								<input
+									type="password"
+									name="confirmPassword"
+									value={form.confirmPassword}
+									onChange={handleChange}
+									className={inputClass}
+								/>
+							</div>
+						</div>
+					</div>
+
+					{/* MESSAGE */}
+					{message && (
+						<div className="mb-5 rounded-[3px] border border-yellow-200 bg-yellow-50 px-4 py-3 text-[13px] text-yellow-800">
+							{message}
+						</div>
+					)}
+
+					{/* SUBMIT */}
+					<button
+						type="submit"
+						className="rounded-[3px] bg-[#192139] px-5 py-3 text-[13px] font-medium text-white transition hover:bg-[#11182d]">
+						Add User
+					</button>
+				</form>
+			</div>
 		</div>
 	);
 }

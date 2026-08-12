@@ -6,7 +6,7 @@ import AdminLayout from "./layouts/AdminLayout";
 import Dashboard from "./pages/Dashboard";
 import ManageUsers from "./pages/ManageUsers";
 import CreateUser from "./pages/CreateUser";
-import KycApplications from "./pages/KycApplications";
+import KYCApplications from "./pages/KYCApplications";
 import KycReview from "./pages/KycReview";
 import Transactions from "./pages/Transactions";
 import Deposits from "./pages/Deposits";
@@ -43,7 +43,7 @@ export default function AdminRoutes() {
 				<Route path="create-user" element={<CreateUser />} />
 
 				{/* KYC */}
-				<Route path="kyc-applications" element={<KycApplications />} />
+				<Route path="kyc-applications" element={<KYCApplications />} />
 
 				<Route path="kyc-applications/:id" element={<KycReview />} />
 
