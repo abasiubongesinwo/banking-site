@@ -78,7 +78,7 @@ function StatusBadge({ status }) {
 	);
 }
 
-export default function KycReview() {
+export default function KYCReview() {
 	const { id } = useParams();
 	const navigate = useNavigate();
 
