@@ -3,8 +3,11 @@ import { motion } from "framer-motion";
 import { Check } from "lucide-react";
 
 export default function LanguageItem({ language, selected, onSelect }) {
+	const isSelected = selected?.code === language.code;
+
 	return (
 		<motion.button
+			type="button"
 			whileHover={{
 				x: 4,
 				backgroundColor: "#ECFDF5",
@@ -14,7 +17,7 @@ export default function LanguageItem({ language, selected, onSelect }) {
 			}}
 			onClick={() => onSelect(language)}
 			className={`flex w-full items-center justify-between rounded-xl px-4 py-3 transition ${
-				selected?.code === language.code ? "bg-emerald-50" : "bg-transparent"
+				isSelected ? "bg-emerald-50" : "bg-transparent"
 			}`}>
 			<div className="flex items-center gap-4">
 				<ReactCountryFlag
@@ -35,11 +38,8 @@ export default function LanguageItem({ language, selected, onSelect }) {
 				</div>
 			</div>
 
-			{selected?.code === language.code && (
-				<motion.div
-					initial={{ scale: 0 }}
-					animate={{ scale: 1 }}
-					transition={{ type: "spring", stiffness: 300 }}>
+			{isSelected && (
+				<motion.div initial={{ scale: 0 }} animate={{ scale: 1 }}>
 					<Check size={18} className="text-emerald-600" />
 				</motion.div>
 			)}

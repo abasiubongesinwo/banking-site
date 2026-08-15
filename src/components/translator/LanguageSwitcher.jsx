@@ -23,13 +23,13 @@ export default function LanguageSwitcher() {
 	const [open, setOpen] = useState(false);
 
 	const [selected, setSelected] = useState(() => {
-		const saved = localStorage.getItem("selected-language");
+		try {
+			const saved = localStorage.getItem("selected-language");
 
-		if (saved) {
-			return JSON.parse(saved);
+			return saved ? JSON.parse(saved) : languages[0];
+		} catch {
+			return languages[0];
 		}
-
-		return languages[0];
 	});
 
 	useEffect(() => {
@@ -38,29 +38,27 @@ export default function LanguageSwitcher() {
 
 	function handleSelect(language) {
 		setSelected(language);
-
 		translatePage(language.code);
 	}
 
 	return (
-		<div className="fixed left-0 top-1/2 z-[100] -translate-y-1/2">
+		// <div className="fixed left-0 top-1/2 z-[100] -translate-y-1/2">
+		<div className="fixed left-0 top-1/2 -translate-y-1/2 flex h-14 w-14 items-center justify-center">
 			<motion.button
-				whileHover={{ scale: 1.1 }}
-				whileTap={{ scale: 0.9 }}
+				whileHover={{ scale: 1.05 }}
+				whileTap={{ scale: 0.95 }}
 				onClick={() => setOpen(!open)}
-				className="flex h-10 w-10 items-center justify-center rounded-r-full border-2 border-l-0 border-white bg-white pl-1 shadow-lg transition hover:border-emerald-500 hover:shadow-emerald-200">
+				className="flex h-12 w-10 items-center justify-center rounded-r-lg bg-white shadow-xl">
 				<ReactCountryFlag
 					countryCode={selected.country}
 					svg
 					style={{
-						width: "1.4em",
-						height: "1.4em",
-						borderRadius: "50%",
+						width: "1.5em",
+						height: "1.5em",
 						objectFit: "cover",
 					}}
 				/>
 			</motion.button>
-
 			<AnimatePresence>
 				{open && (
 					<div className="absolute left-full top-1/2 ml-3 -translate-y-1/2">

@@ -15,6 +15,8 @@ import CTA from "./components/home/CTA";
 import MobileApp from "./components/home/MobileApp";
 import DigitalBanking from "./components/home/DigitalBanking";
 import AccountBanner from "./components/home/AccountBanner";
+import GoogleTranslateProvider from "./components/translator/GoogleTranslateProvider";
+import LanguageSwitcher from "./components/translator/LanguageSwitcher";
 
 // Pages
 import About from "./pages/About";
@@ -29,7 +31,6 @@ import Terms from "./pages/Terms";
 import AdminRoutes from "./admin/AdminRoutes";
 
 // Styles
-import "./components/translator/translator.css";
 import "./styles/phone.css";
 
 function HomePage() {
@@ -109,6 +110,9 @@ function App() {
 			{/* Admin Routes */}
 
 			<AdminRoutes />
+
+			<GoogleTranslateProvider />
+			<LanguageSwitcher />
 
 			{shouldShowFooter() && <Footer />}
 		</>

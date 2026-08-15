@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search } from "lucide-react";
+
 import LanguageItem from "./LanguageItem";
 import { languages } from "./languages";
 
@@ -11,27 +12,28 @@ export default function LanguageDropdown({
 	onClose,
 }) {
 	const [search, setSearch] = useState("");
-
 	const dropdownRef = useRef(null);
 
-	// Close when clicking outside
 	useEffect(() => {
-		function handleClickOutside(e) {
-			if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+		function handleClickOutside(event) {
+			if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
 				onClose();
 			}
 		}
 
 		document.addEventListener("mousedown", handleClickOutside);
 
-		return () => document.removeEventListener("mousedown", handleClickOutside);
+		return () => {
+			document.removeEventListener("mousedown", handleClickOutside);
+		};
 	}, [onClose]);
 
-	// Filter languages
 	const filteredLanguages = useMemo(() => {
-		return languages.filter((language) => {
-			const value = search.toLowerCase();
+		const value = search.toLowerCase().trim();
 
+		if (!value) return languages;
+
+		return languages.filter((language) => {
 			return (
 				language.name.toLowerCase().includes(value) ||
 				language.native.toLowerCase().includes(value)
@@ -59,14 +61,10 @@ export default function LanguageDropdown({
 						y: 15,
 						scale: 0.96,
 					}}
-					transition={{
-						duration: 0.22,
-					}}
-					className="relative w-96 overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-2xl">
-					{/* Header */}
-
+					transition={{ duration: 0.2 }}
+					className="w-[calc(100vw-75px)] max-w-96 overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-2xl">
 					<div className="border-b border-gray-100 p-5">
-						<h3 className="text-lg font-bold">Select Language</h3>
+						<h3 className="text-lg font-bold text-gray-900">Select Language</h3>
 
 						<p className="mt-1 text-sm text-gray-500">
 							Translate the website into your preferred language.
@@ -80,15 +78,13 @@ export default function LanguageDropdown({
 
 							<input
 								type="text"
-								placeholder="Search language..."
 								value={search}
-								onChange={(e) => setSearch(e.target.value)}
-								className="w-full rounded-xl border border-gray-200 py-3 pl-11 pr-4 outline-none transition focus:border-emerald-500"
+								onChange={(event) => setSearch(event.target.value)}
+								placeholder="Search language..."
+								className="w-full rounded-xl border border-gray-200 py-3 pl-11 pr-4 text-sm outline-none transition focus:border-emerald-500"
 							/>
 						</div>
 					</div>
-
-					{/* Languages */}
 
 					<div className="max-h-[420px] overflow-y-auto p-3">
 						{filteredLanguages.length > 0 ?
@@ -97,13 +93,13 @@ export default function LanguageDropdown({
 									key={language.code}
 									language={language}
 									selected={selected}
-									onSelect={(lang) => {
-										onSelect(lang);
+									onSelect={(language) => {
+										onSelect(language);
 										onClose();
 									}}
 								/>
 							))
-						:	<div className="py-10 text-center text-gray-500">
+						:	<div className="py-10 text-center text-sm text-gray-500">
 								No language found.
 							</div>
 						}

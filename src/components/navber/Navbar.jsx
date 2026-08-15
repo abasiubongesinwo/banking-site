@@ -46,7 +46,7 @@ export default function Navbar() {
 
 				<MobileNav open={mobileOpen} onClose={() => setMobileOpen(false)} />
 
-				<LanguageSwitcher />
+				{/* <LanguageSwitcher /> */}
 			</header>
 		</>
 	);
