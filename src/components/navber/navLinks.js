@@ -12,32 +12,12 @@ export const navLinks = [
 		children: [
 			{
 				name: "Investment Management",
-				path: "/services/investment-management",
+				path: "/investment-management",
 			},
 			{
 				name: "Business Loan",
-				path: "/services/business-loan",
+				path: "/business-loan",
 			},
-			// {
-			// 	name: "Personal Loan",
-			// 	path: "/services/personal-loan",
-			// },
-			// {
-			// 	name: "Savings Account",
-			// 	path: "/services/savings-account",
-			// },
-			// {
-			// 	name: "Current Account",
-			// 	path: "/services/current-account",
-			// },
-			// {
-			// 	name: "Corporate Banking",
-			// 	path: "/services/corporate-banking",
-			// },
-			// {
-			// 	name: "Internet Banking",
-			// 	path: "/services/internet-banking",
-			// },
 		],
 	},
 	{

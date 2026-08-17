@@ -2,7 +2,6 @@ import { useEffect } from "react";
 
 export default function GoogleTranslateProvider() {
 	useEffect(() => {
-		// Prevent Google from displaying its own top translation bar
 		window.googleTranslateElementInit = () => {
 			if (!window.google?.translate) return;
 

@@ -43,12 +43,14 @@ export default function LanguageSwitcher() {
 
 	return (
 		// <div className="fixed left-0 top-1/2 z-[100] -translate-y-1/2">
-		<div className="fixed left-0 top-1/2 -translate-y-1/2 flex h-14 w-14 items-center justify-center">
+		// <div className="fixed left-0 top-1/2 -translate-y-1/2 flex h-14 w-14 items-center justify-center">
+		// <div className="fixed left-8 bottom-8 flex h-14 w-14 items-center justify-center rounded-full">
+		<div className="fixed left-8 bottom-8 z-[9999] flex h-14 w-14 items-center justify-center">
 			<motion.button
 				whileHover={{ scale: 1.05 }}
 				whileTap={{ scale: 0.95 }}
 				onClick={() => setOpen(!open)}
-				className="flex h-12 w-10 items-center justify-center rounded-r-lg bg-white shadow-xl">
+				className="flex h-12 w-10 items-center justify-center bg-white">
 				<ReactCountryFlag
 					countryCode={selected.country}
 					svg
@@ -61,7 +63,7 @@ export default function LanguageSwitcher() {
 			</motion.button>
 			<AnimatePresence>
 				{open && (
-					<div className="absolute left-full top-1/2 ml-3 -translate-y-1/2">
+					<div className="absolute left-full ml-1 -translate-y-1/2">
 						<LanguageDropdown
 							open={open}
 							selected={selected}

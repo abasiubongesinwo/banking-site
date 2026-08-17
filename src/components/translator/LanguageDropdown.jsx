@@ -62,7 +62,7 @@ export default function LanguageDropdown({
 						scale: 0.96,
 					}}
 					transition={{ duration: 0.2 }}
-					className="w-[calc(100vw-75px)] max-w-96 overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-2xl">
+					className="w-[calc(100vw-75px)] max-w-96 overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-2xl sm:max-w-70">
 					<div className="border-b border-gray-100 p-5">
 						<h3 className="text-lg font-bold text-gray-900">Select Language</h3>
 

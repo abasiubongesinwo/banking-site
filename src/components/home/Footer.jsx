@@ -157,7 +157,8 @@ export default function Footer() {
 						behavior: "smooth",
 					})
 				}
-				className="fixed right-8 bottom-8 flex h-14 w-14 items-center justify-center rounded-full bg-emerald-600 shadow-2xl transition hover:-translate-y-1 hover:bg-emerald-500">
+				// className="fixed right-8 bottom-8 flex h-14 w-14 items-center justify-center rounded-full bg-emerald-600 shadow-2xl transition hover:-translate-y-1 hover:bg-emerald-500">
+				className="fixed right-8 bottom-8 z-[9999] flex h-14 w-14 items-center justify-center rounded-full bg-emerald-600 shadow-2xl transition hover:-translate-y-1 hover:bg-emerald-500">
 				<ArrowUp size={22} />
 			</button>
 		</footer>

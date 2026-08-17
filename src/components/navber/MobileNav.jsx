@@ -26,7 +26,7 @@ export default function MobileNav({ open, onClose }) {
 						animate={{ x: 0 }}
 						exit={{ x: "100%" }}
 						transition={{ duration: 0.3 }}
-						className="fixed right-0 top-0 z-50 h-screen w-80 bg-white shadow-2xl lg:hidden">
+						className="fixed right-0 top-0 z-50 h-120 w-full bg-white shadow-2xl lg:hidden">
 						<div className="flex h-full flex-col">
 							{/* Header */}
 							<div className="flex items-center justify-between border-b p-6">
